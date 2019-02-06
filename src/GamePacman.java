@@ -3,13 +3,13 @@ public class GamePacman {
 
     private static final int DEFAULT_SIZE = 10;
 
-    private static int boardSize;
+    private static int boardSize = DEFAULT_SIZE;
     private static Board board;
 
 
     public static void main(String[] args) {
 
-        processArgs(args);
+//        processArgs(args);
 
         System.out.println("Welcome to Pac-Man!");
         
@@ -17,39 +17,40 @@ public class GamePacman {
         
         // print initial board
         System.out.println(board);
+        board.refreshGrid();
 
         // Examples on how to move the Pac-Man in main.
-        if ( board.canMove(Direction.UP) ) {
-                board.move(Direction.UP);
-        } // If cannot move, don't change anything.
-        System.out.println(board);
-        if ( board.isGameOver() ) {
-            System.out.println("Game Over!");
-        }
-
-        if ( board.canMove(Direction.LEFT) ) {
-                board.move(Direction.LEFT);
-        } // If cannot move, don't change anything.
-        System.out.println(board);
-        if ( board.isGameOver() ) {
-            System.out.println("Game Over!");
-        }
-
-        if ( board.canMove(Direction.DOWN) ) {
-                board.move(Direction.DOWN);
-        } // If cannot move, don't change anything.
-        System.out.println(board);
-        if ( board.isGameOver() ) {
-            System.out.println("Game Over!");
-        }
-
-        if ( board.canMove(Direction.RIGHT) ) {
-                board.move(Direction.RIGHT);
-        } // If cannot move, don't change anything.
-        System.out.println(board);
-        if ( board.isGameOver() ) {
-            System.out.println("Game Over!");
-        }
+//        if ( board.canMove(Direction.UP) ) {
+//                board.move(Direction.UP);
+//        } // If cannot move, don't change anything.
+//        System.out.println(board);
+//        if ( board.isGameOver() ) {
+//            System.out.println("Game Over!");
+//        }
+//
+//        if ( board.canMove(Direction.LEFT) ) {
+//                board.move(Direction.LEFT);
+//        } // If cannot move, don't change anything.
+//        System.out.println(board);
+//        if ( board.isGameOver() ) {
+//            System.out.println("Game Over!");
+//        }
+//
+//        if ( board.canMove(Direction.DOWN) ) {
+//                board.move(Direction.DOWN);
+//        } // If cannot move, don't change anything.
+//        System.out.println(board);
+//        if ( board.isGameOver() ) {
+//            System.out.println("Game Over!");
+//        }
+//
+//        if ( board.canMove(Direction.RIGHT) ) {
+//                board.move(Direction.RIGHT);
+//        } // If cannot move, don't change anything.
+//        System.out.println(board);
+//        if ( board.isGameOver() ) {
+//            System.out.println("Game Over!");
+//        }
 
     }
 // takes an array of String which represents the command line arguments and initialize instance variable boardSize
