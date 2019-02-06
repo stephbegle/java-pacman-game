@@ -39,7 +39,7 @@ public class Board {
         this.mid = this.GRID_SIZE / 2;
         this.visited = new boolean[this.GRID_SIZE][this.GRID_SIZE];
         this.score = 0;
-
+        this.grid = new char[side][side];
 
         //gIndex maps pacman and ghosts initial positions
         int ghostIndex = this.GRID_SIZE -1;
@@ -61,7 +61,7 @@ public class Board {
         //set pacman to the center of the grid when starting
         setVisited(this.mid, this.mid);
 
-        this.grid = new char[side][side];
+
 
         // TODO - Initialize instance variables
     }
@@ -78,9 +78,9 @@ public class Board {
 
     // will update grid [][] according to the info stored in visited, pacman, and ghosts
     public void refreshGrid() {
-        int i, j = 0;
-        for(i = 0; i < this.grid.length; i++){
-            for(j = 0; j < this.grid.length; j++){
+        int i, j, k = 0;
+        for(i = 0; i < this.grid.length; i++) {
+            for (j = 0; j < this.grid.length; j++) {
                 if (this.visited[i][j] == true) {
                     this.grid[i][j] = ' ';
                 } else {
@@ -89,9 +89,12 @@ public class Board {
                 // if pacman has visited, --> ' '
                 // if he has not visited --> '*'
             }
+        }
 
-        System.out.println("this should print once");
-        System.out.println(Arrays.deepToString(this.grid));
+        for(k = 0; k < this.grid.length; k++) {
+            System.out.println(Arrays.toString(this.grid[k]));
+        }
+
                 // nested for loops with if conditions following, check if pacma
 
         // TODO
@@ -141,7 +144,6 @@ public class Board {
 //
 //        //TODO
 //
-    }
 
 
 
