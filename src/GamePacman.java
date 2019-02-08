@@ -17,7 +17,7 @@ public class GamePacman {
         
         // print initial board
         System.out.println(board);
-        board.refreshGrid();
+//        board.refreshGrid();
 
         // Examples on how to move the Pac-Man in main.
 //        if ( board.canMove(Direction.UP) ) {

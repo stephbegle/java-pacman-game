@@ -1,9 +1,20 @@
-import java.lang.StringBuilder;
-import java.util.*;
-import java.io.*;
+import java.util.Arrays;
 
 /**
- * @author      Firstname Lastname <address @ example.com>
+ * @author      Stephanie Begle <sbegle@ucsd.edu>
+ *     This file initializes private variables in the Board constructor and allows for implementaion
+ *     in the methods. The methods used in this file create the grid of the game, the characters used to
+ *     play, conditions for specific situations that occur while playing the game, and the movement of
+ *     pacman and the ghosts.
+ *
+ *     The purpose of Board class is so that we can create objects and be allowed to use
+ *     such objects within methods. Board class allows us to use all of the characteristics that the board of pacman
+ *     requires: characters, grid, ghosts, movement, etc.
+ *
+ *     Methods are blocks of code within a class that can then later be used by name and be invoked in other
+ *     parts of the program whenever necessary. Some methods are created as void or int. If the method is void
+ *     it should not return any value. If the method is of type "int" then it should be returning and int
+ *     aswell. Methods can contain arguments, and those can be of any type according to what you have specified.
  */
 public class Board {
 
@@ -17,6 +28,7 @@ public class Board {
     private int score;              // Score Recorded for the gamer
     private int mid;
 
+
     /*
      * Constructor
      *
@@ -25,85 +37,121 @@ public class Board {
      * @param:  TODO
      * @return: TODO
      */
-
-    // constructor takes in an int... initialize all instance variables from above
-    // when constructing pacman and ghosts, pacman always spawns at center of grid, ghosts spawn at 4 corners
-    //if grid size is an even number, then pacman spawns at the bottom right corner
-    //new game, there are always 4 ghosts
     public Board(int size) {
+
         int side = size;
-        if(size < 3) {
+        if (size < 3){
             side = 10;
         }
-        this.GRID_SIZE = side;
-        this.mid = this.GRID_SIZE / 2;
+        // TODO - Initialize instance variables
+        this.GRID_SIZE = size;
         this.visited = new boolean[this.GRID_SIZE][this.GRID_SIZE];
+        this.mid = this.GRID_SIZE / 2;
         this.score = 0;
         this.grid = new char[side][side];
 
-        //gIndex maps pacman and ghosts initial positions
-        int ghostIndex = this.GRID_SIZE -1;
+        // Create ghostIndex variable for easier readability
+        int ghostIndex = this.GRID_SIZE - 1;
 
-        //Sets up the positions of pacman and the ghosts at the start of the game
+        // Initalize pacman character along with new ghosts
         this.pacman = new PacCharacter(this.mid, this.mid, 'P');
-        PacCharacter upperLeftGhost = new PacCharacter(0, 0, 'G');
-        PacCharacter upperRightGhost = new PacCharacter(0, ghostIndex, 'G');
-        PacCharacter lowerLeftGhost = new PacCharacter(ghostIndex, 0, 'G');
-        PacCharacter lowerRightGhost = new PacCharacter(ghostIndex, ghostIndex, 'G');
+        this.ghosts = new PacCharacter[4];
+        this.ghosts[0] = new PacCharacter(0, 0, 'G');
+        this.ghosts[1] = new PacCharacter(ghostIndex, 0, 'G');
+        this.ghosts[2] = new PacCharacter(0, ghostIndex, 'G');
+        this.ghosts[3] = new PacCharacter(ghostIndex, ghostIndex, 'G');
 
 
-        //initiating ghosts and setting the ghosts to arrays
-//        this.ghosts[0] = upperLeftGhost;
-//        this.ghosts[1] = upperRightGhost;
-//        this.ghosts[2] = lowerLeftGhost;
-//        this.ghosts[3] = lowerRightGhost;
-
-        //set pacman to the center of the grid when starting
+        // Set starting point for pacman
         setVisited(this.mid, this.mid);
 
+        // For testing
+        System.out.println(this.GRID_SIZE);
+        for (int i = 0; i < this.visited.length; i++) {
+            System.out.println(Arrays.toString(this.visited[i]));
+        }
+        System.out.println("Pacman coordinates:" + pacman.getRow() + pacman.getCol());
 
 
-        // TODO - Initialize instance variables
+        refreshGrid();
+
+        String boardString = toString();
+        System.out.println(boardString);
     }
 
-//if the pacman has visited this coordinate, it will record it and "set" the visit to TRUE ( creating an empty slot)
-    // in visited [][]
-    // x = row, y = col
+
     public void setVisited(int x, int y) {
         this.visited[x][y] = true;
-
-
-        // TODO
     }
 
-    // will update grid [][] according to the info stored in visited, pacman, and ghosts
     public void refreshGrid() {
-        int i, j, k = 0;
-        for(i = 0; i < this.grid.length; i++) {
+
+        int i, j;
+        for (i = 0; i < this.grid.length; i++) {
             for (j = 0; j < this.grid.length; j++) {
-                if (this.visited[i][j] == true) {
-                    this.grid[i][j] = ' ';
+
+                // Determine postion of pacman and update setVisited with grid position
+                if (i == pacman.getRow() && j == pacman.getCol()) {
+                    grid[i][j] = pacman.getAppearance();
+                    setVisited(i, j);
+
+                    // Check if pacman is at starting point in game and if true, then don't increment score yet
+                    if (i == mid && j == mid) {
+                        continue;
+                    } else {
+                        // Increment score when pacman has moved
+                        this.score += 10;
+                    }
+                } else if (i == ghosts[0].getRow() && j == ghosts[0].getCol()) {
+
+                    grid[i][j] = ghosts[0].getAppearance();
+
+                } else if (i == ghosts[1].getRow() && j == ghosts[1].getCol()) {
+
+                    grid[i][j] = ghosts[1].getAppearance();
+
+                } else if (i == ghosts[2].getRow() && j == ghosts[2].getCol()) {
+
+                    grid[i][j] = ghosts[2].getAppearance();
+
+                } else if (i == ghosts[3].getRow() && j == ghosts[3].getCol()) {
+
+                    grid[i][j] = ghosts[3].getAppearance();
+
+                } else if (visited[i][j] == true) {
+
+                    grid[i][j] = ' ';
                 } else {
-                    this.grid[i][j] = '*';
+
+                    grid[i][j] = '*';
                 }
-                // if pacman has visited, --> ' '
-                // if he has not visited --> '*'
+
+                if (isGameOver() == true) {
+                    grid[i][j] = 'X';
+                }
             }
         }
-
-        for(k = 0; k < this.grid.length; k++) {
-            System.out.println(Arrays.toString(this.grid[k]));
-        }
-
-                // nested for loops with if conditions following, check if pacma
-
-        // TODO
     }
 
-//takes in a Direction and returns boolean whethere pacman is able to move in that direction
-//    public boolean canMove(Direction direction) {
-//        // TODO
-//    }
+    public boolean canMove(Direction direction) {
+
+        boolean inBounds;
+        int xIndex;
+        int yIndex;
+        boolean xCheck;
+        boolean yCheck;
+
+        // Add current pacman position in grid to displacement of direction
+        xIndex = pacman.getRow() + direction.getX();
+        yIndex = pacman.getCol() + direction.getY();
+
+        // Check that x and y index is in bounds of the grid
+        xCheck = ((xIndex >= 0) && (xIndex < grid.length));
+        yCheck = ((yIndex >= 0) && (yIndex < grid.length));
+        inBounds = (xCheck) && (yCheck);
+
+        return inBounds;
+    }
 
 //the actual movement.... enter direction definitions? " get enum Direction" ?
     // groups other methods together to execute a move of user after checking canMove
@@ -116,12 +164,21 @@ public class Board {
 //        // TODO
 //    }
 
-// here we can write an if statment that asks whether pacman and a ghost is in the same coordinate?
+
     // do not need to update grid board in this method. That is another methods job .....
-//    public boolean isGameOver() {
-//        }
-//        // TODO
-//    }
+    public boolean isGameOver() {
+
+// Check to see if pacman and ghosts are in same cell
+
+        for (int g = 0; g < ghosts.length; g++) {
+            if (pacman.getRow() == ghosts[g].getRow() && pacman.getCol() == ghosts[g].getCol()) {
+
+                return true;
+            }
+        }
+
+        return false;
+    }
 
     //lengthy method
     // Monster always move towards Pac-man
@@ -137,13 +194,35 @@ public class Board {
 // returns a string representation of an object
     // use stringbuilder to concatenate rather than +
     // .append() and .toString() will be helpful here in stringBuilder class
-//    public String toString(){
-//
-//        StringBuilder outputString = new StringBuilder();
-//        outputString.append(String.format("Score: %d\n", this.score));
-//
-//        //TODO
-//
+    public String toString(){
+
+        StringBuilder outputString=new StringBuilder();
+        outputString.append(String.format("Score: %d\n",this.score));
+
+        //TODO
+        String arrString;
+        String[]splitString;
+        String joinedString;
+
+        for(int i=0;i<grid.length;i++){
+
+        // Convert each row in array to string
+        arrString=Arrays.toString(grid[i]);
+
+        // Split string on commas and then join with ' ' in between
+        splitString=arrString.split(",");
+        joinedString=String.join(" ",splitString);
+
+        // Remove the square brackets and replace with empty string
+        joinedString=joinedString.replace("[","");
+        joinedString=joinedString.replace("]","");
+
+        // Append row string along with newline character to outputString
+        outputString.append(joinedString+"\n");
+        }
+
+        return outputString.toString();
+        }
 
 
 

@@ -14,13 +14,13 @@ public class PacCharacter {
         //TODO
     }
  //the following are the "contracts" (public methods) used to be able to access the private variables
-    public int getRow(int row) {
+    public int getRow() {
 
         //TODO
         return this.row;
     }
 
-    public int getCol(int col) {
+    public int getCol() {
         //TODO
         return this.col;
     }
